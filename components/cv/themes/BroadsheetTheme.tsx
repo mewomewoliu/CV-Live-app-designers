@@ -113,7 +113,7 @@ function SectionHeader({ index, title }: { index: string; title: string }) {
 }
 
 /* ── Experience entry ── */
-function ExperienceItem({ exp, index }: { exp: CVExperience; index: number }) {
+function ExperienceItem({ exp }: { exp: CVExperience; index?: number }) {
   const period = exp.endDate === 'Present'
     ? `${exp.startDate} — PRESENT`
     : `${exp.startDate} — ${exp.endDate}`
@@ -211,7 +211,6 @@ function Corners() {
 
 export function BroadsheetTheme({ data, context }: Props) {
   const { bio, experience, skills, education, languages } = data
-  const fullName = `${bio.firstName} ${bio.lastName}`
   const pageOneExp = experience.slice(0, 3)
   const pageTwoExp = experience.slice(3, 6)
   const pageThreeExp = experience.slice(6)
@@ -231,7 +230,7 @@ export function BroadsheetTheme({ data, context }: Props) {
       {education.length > 0 && (
         <div>
           <SectionHeader index="02" title="Archival Data" />
-          {education.map((edu, i) => (
+          {education.map((edu) => (
             <div key={edu.id} style={{ paddingBottom: '1.1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.1rem' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.35rem' }}>
