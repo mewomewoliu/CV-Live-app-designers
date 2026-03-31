@@ -17,14 +17,23 @@ function CvLiveIcon() {
   )
 }
 
+const URL_ERRORS: Record<string, string> = {
+  no_cv: 'Your account was set up but something went wrong loading your CV. Please sign in again.',
+  auth_callback_failed: 'Email confirmation failed. Please try signing up again.',
+  missing_code: 'Invalid confirmation link. Please try signing up again.',
+}
+
 function SignInForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') ?? '/editor'
+  const urlError = searchParams.get('error')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(
+    urlError ? (URL_ERRORS[urlError] ?? 'Something went wrong. Please try again.') : null
+  )
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {

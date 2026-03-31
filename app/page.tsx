@@ -1,118 +1,443 @@
 import Link from 'next/link'
 
-function CvLiveIcon({ size = 20 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <rect width="20" height="20" rx="4" fill="#18181b" />
-      {/* Document lines */}
-      <rect x="5" y="7" width="6" height="1.5" rx="0.75" fill="white" opacity="0.9" />
-      <rect x="5" y="10" width="9" height="1.5" rx="0.75" fill="white" opacity="0.9" />
-      <rect x="5" y="13" width="7.5" height="1.5" rx="0.75" fill="white" opacity="0.9" />
-      {/* Live dot */}
-      <circle cx="15" cy="6.5" r="2.5" fill="#4ade80" />
-    </svg>
-  )
-}
+const COLS = [
+  'A','B','C','D','E','F','G','H','I','J','K','L','M',
+  'N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+  'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK',
+  'AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV',
+  'AW','AX','AY','AZ',
+]
+
+const ROWS = Array.from({ length: 52 }, (_, i) => i + 1)
 
 const FEATURES = [
   {
-    label: 'Live URL',
-    desc: 'cv.live/yourname — always your latest version. Share one link, never send a file again.',
+    ref: 'F-001',
+    feature: 'Live URL',
+    description: 'cv.live/yourname — share one link. Never send a file again.',
+    status: 'ACTIVE',
   },
   {
-    label: 'Structured editor',
-    desc: 'Form-based with live preview. No layout decisions, no design work — just fill it in.',
+    ref: 'F-002',
+    feature: 'Structured editor',
+    description: 'Fill in the fields. It looks good automatically. No design work.',
+    status: 'ACTIVE',
   },
   {
-    label: '1-click PDF',
-    desc: 'Server-rendered A4. Text-selectable, ATS-safe, embedded fonts. Looks like a real CV.',
+    ref: 'F-003',
+    feature: '1-click PDF',
+    description: 'A4, ATS-safe, text-selectable. Looks like a real CV.',
+    status: 'ACTIVE',
+  },
+  {
+    ref: 'F-004',
+    feature: 'Aesthetic themes',
+    description: 'Pick your look. More coming. Still no Canva required.',
+    status: 'ACTIVE',
+  },
+  {
+    ref: 'F-005',
+    feature: 'Custom domain',
+    description: 'yourname.com → your CV. Very cool. Very soon.',
+    status: 'SOON',
   },
 ]
 
+const BLUE = '#1111cc'
+const BG = '#f3f4e8'
+const GRID = 'rgba(10, 10, 180, 0.12)'
+
 export default function Home() {
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900 flex flex-col">
-
-      {/* ── Nav — matches editor toolbar exactly ─────────── */}
-      <header className="h-14 bg-white border-b border-zinc-200 flex items-center px-5 flex-shrink-0">
-        <div className="flex items-center gap-2 mr-auto">
-          <CvLiveIcon size={20} />
-          <span className="text-sm font-black tracking-tighter text-zinc-900">CV.live</span>
-        </div>
-
-        <nav className="flex items-center gap-1" aria-label="Site navigation">
-          <Link
-            href="/auth/sign-in"
-            className="text-xs text-zinc-500 hover:text-zinc-900 px-3 py-1.5 rounded transition-colors"
+    <div
+      style={{
+        minHeight: '100vh',
+        backgroundColor: BG,
+        backgroundImage: `
+          linear-gradient(to right, ${GRID} 1px, transparent 1px),
+          linear-gradient(to bottom, ${GRID} 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px',
+        backgroundPosition: '48px 28px',
+        color: BLUE,
+        fontFamily: 'var(--font-inter), Inter, sans-serif',
+        overflowX: 'hidden',
+      }}
+    >
+      {/* ── Column label header ───────────────────────────────────── */}
+      <div
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 20,
+          display: 'flex',
+          alignItems: 'stretch',
+          borderBottom: `1px solid ${GRID}`,
+          backgroundColor: BG,
+          height: 28,
+        }}
+      >
+        {/* corner */}
+        <div
+          style={{
+            width: 48,
+            minWidth: 48,
+            borderRight: `1px solid rgba(10,10,180,0.2)`,
+          }}
+        />
+        {COLS.slice(0, 48).map((col) => (
+          <div
+            key={col}
+            style={{
+              width: 40,
+              minWidth: 40,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 9,
+              fontWeight: 600,
+              letterSpacing: '0.05em',
+              color: `rgba(10,10,180,0.4)`,
+              borderRight: `1px solid rgba(10,10,180,0.06)`,
+              flexShrink: 0,
+            }}
           >
-            Sign in
-          </Link>
-          <Link
-            href="/auth/sign-up"
-            className="text-xs bg-zinc-900 text-white hover:bg-zinc-700 px-3 py-1.5 rounded transition-colors font-medium"
-          >
-            Get started
-          </Link>
-        </nav>
-      </header>
-
-      {/* ── Hero ─────────────────────────────────────────── */}
-      <main className="flex-1 flex flex-col items-start justify-center px-8 sm:px-16 py-24 max-w-4xl">
-        <div className="text-[10px] font-mono tracking-[0.18em] uppercase text-zinc-400 mb-6">
-          Free · Public Beta
-        </div>
-
-        <h1 className="text-5xl sm:text-6xl font-black tracking-[-0.03em] leading-[1.05] mb-6">
-          Your CV,
-          <br />
-          <span className="text-zinc-400">always live.</span>
-        </h1>
-
-        <p className="text-base text-zinc-500 leading-relaxed mb-10 max-w-sm">
-          A structured editor with a live URL and one-click A4 PDF.
-          Share a link — no attachments, no reformatting.
-        </p>
-
-        <div className="flex items-center gap-5">
-          <Link
-            href="/editor"
-            className="inline-flex items-center gap-2 bg-zinc-900 text-white text-sm font-semibold px-4 py-2.5 rounded hover:bg-zinc-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
-          >
-            Build your CV
-            <span aria-hidden="true">→</span>
-          </Link>
-          <Link
-            href="/mia-liu"
-            className="text-sm text-zinc-400 hover:text-zinc-700 transition-colors"
-          >
-            See an example ↗
-          </Link>
-        </div>
-
-        <p className="mt-8 text-xs font-mono text-zinc-300">
-          cv.live/<span className="text-zinc-400">yourname</span>
-        </p>
-      </main>
-
-      {/* ── Feature strip — same border language as editor ─ */}
-      <footer className="bg-white border-t border-zinc-200 grid grid-cols-1 sm:grid-cols-3 sm:divide-x divide-zinc-200">
-        {FEATURES.map(({ label, desc }) => (
-          <div key={label} className="px-8 py-7 border-t border-zinc-200 sm:border-t-0">
-            <div className="text-[9px] font-mono tracking-[0.2em] uppercase text-zinc-400 mb-2">
-              {label}
-            </div>
-            <p className="text-sm text-zinc-500 leading-relaxed">{desc}</p>
+            {col}
           </div>
         ))}
-      </footer>
+      </div>
 
+      {/* ── Main layout: row labels + content ────────────────────── */}
+      <div style={{ display: 'flex' }}>
+        {/* Row labels */}
+        <div
+          style={{
+            width: 48,
+            minWidth: 48,
+            borderRight: `1px solid rgba(10,10,180,0.2)`,
+            flexShrink: 0,
+          }}
+        >
+          {ROWS.map((n) => (
+            <div
+              key={n}
+              style={{
+                height: 40,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                paddingRight: 7,
+                fontSize: 9,
+                fontWeight: 500,
+                color: `rgba(10,10,180,0.35)`,
+                borderBottom: `1px solid rgba(10,10,180,0.04)`,
+              }}
+            >
+              {n}
+            </div>
+          ))}
+        </div>
+
+        {/* ── Content ──────────────────────────────────────────────── */}
+        <div style={{ flex: 1, position: 'relative', paddingBottom: 80 }}>
+
+          {/* Navigation — top right */}
+          <nav
+            style={{
+              position: 'absolute',
+              top: 8,
+              right: 24,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 3,
+              zIndex: 10,
+            }}
+          >
+            {[
+              { label: 'BUILD YOUR CV  [A]', href: '/editor' },
+              { label: 'SIGN IN  [B]', href: '/auth/sign-in' },
+              { label: 'GIVE FEEDBACK  [C]', href: 'mailto:hello@cv.live' },
+            ].map(({ label, href }) => (
+              <Link
+                key={label}
+                href={href}
+                style={{
+                  display: 'block',
+                  border: `1.5px solid ${BLUE}`,
+                  padding: '5px 12px',
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: '0.1em',
+                  color: BLUE,
+                  textDecoration: 'none',
+                  backgroundColor: 'transparent',
+                  whiteSpace: 'nowrap',
+                }}
+                className="home-nav-link"
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Version badge — rows 3-4 */}
+          <div
+            style={{
+              paddingTop: 80,
+              paddingLeft: 40,
+              fontSize: 10,
+              fontWeight: 600,
+              letterSpacing: '0.15em',
+              opacity: 0.5,
+            }}
+          >
+            SYS.OP.2026 // V.1.0.0
+          </div>
+
+          {/* ── Hero headline — rows 5-12 ──────────────────────── */}
+          <div
+            style={{
+              paddingLeft: 36,
+              paddingTop: 8,
+              paddingRight: 320,
+              overflow: 'hidden',
+            }}
+          >
+            <h1
+              style={{
+                fontSize: 'clamp(80px, 11vw, 160px)',
+                fontWeight: 900,
+                lineHeight: 0.88,
+                letterSpacing: '-0.03em',
+                margin: 0,
+                color: BLUE,
+              }}
+            >
+              YOUR CV.
+              <br />
+              ALWAYS
+              <br />
+              LIVE.
+            </h1>
+          </div>
+
+          {/* ── Tagline + pitch — rows 13-18 ─────────────────── */}
+          <div
+            style={{
+              paddingLeft: 40,
+              paddingTop: 40,
+              paddingRight: 360,
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '0 80px',
+              borderTop: `1px solid rgba(10,10,180,0.2)`,
+              marginTop: 32,
+              paddingBottom: 32,
+            }}
+          >
+            <div>
+              <p
+                style={{
+                  fontSize: 16,
+                  lineHeight: 1.6,
+                  margin: 0,
+                  fontWeight: 400,
+                  maxWidth: 420,
+                }}
+              >
+                Build your CV in minutes. Share it with a link.
+                Download a perfect A4 PDF whenever you need.
+                No design skills. No attachments. No drama.
+              </p>
+              <div style={{ display: 'flex', gap: 12, marginTop: 28 }}>
+                <Link
+                  href="/editor"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    backgroundColor: BLUE,
+                    color: BG,
+                    padding: '10px 20px',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: '0.1em',
+                    textDecoration: 'none',
+                    border: `1.5px solid ${BLUE}`,
+                  }}
+                  className="home-cta-primary"
+                >
+                  START BUILDING →
+                </Link>
+                <Link
+                  href="/auth/sign-in"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    backgroundColor: 'transparent',
+                    color: BLUE,
+                    padding: '10px 20px',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: '0.1em',
+                    textDecoration: 'none',
+                    border: `1.5px solid ${BLUE}`,
+                  }}
+                  className="home-cta-secondary"
+                >
+                  SIGN IN
+                </Link>
+              </div>
+            </div>
+
+            {/* Status columns */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '0 24px',
+                alignContent: 'start',
+              }}
+            >
+              {[
+                { label: 'STATUS', value: 'Free · Open Beta' },
+                { label: 'FORMAT', value: 'A4 PDF + Live URL' },
+                { label: 'ACCOUNT', value: 'Required to save' },
+                { label: 'TEMPLATES', value: '3 themes included' },
+              ].map(({ label, value }) => (
+                <div key={label} style={{ paddingBottom: 16 }}>
+                  <div
+                    style={{
+                      fontSize: 9,
+                      fontWeight: 700,
+                      letterSpacing: '0.15em',
+                      opacity: 0.5,
+                      marginBottom: 4,
+                    }}
+                  >
+                    {label}
+                  </div>
+                  <div style={{ fontSize: 12, fontWeight: 500 }}>{value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Feature table ─────────────────────────────────── */}
+          <div
+            style={{
+              paddingLeft: 40,
+              paddingRight: 40,
+              marginTop: 8,
+            }}
+          >
+            {/* Table header */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '80px 200px 1fr 100px',
+                gap: '0 24px',
+                padding: '10px 0',
+                borderTop: `1.5px solid ${BLUE}`,
+                borderBottom: `1px solid rgba(10,10,180,0.3)`,
+              }}
+            >
+              {['REF', 'FEATURE', 'DESCRIPTION', 'STATUS'].map((h) => (
+                <div
+                  key={h}
+                  style={{
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: '0.15em',
+                  }}
+                >
+                  {h}
+                </div>
+              ))}
+            </div>
+
+            {/* Table rows */}
+            {FEATURES.map(({ ref, feature, description, status }) => (
+              <div
+                key={ref}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '80px 200px 1fr 100px',
+                  gap: '0 24px',
+                  padding: '14px 0',
+                  borderBottom: `1px solid rgba(10,10,180,0.12)`,
+                  alignItems: 'start',
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 600,
+                    letterSpacing: '0.05em',
+                    opacity: 0.5,
+                    paddingTop: 1,
+                  }}
+                >
+                  {ref}
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 700 }}>{feature}</div>
+                <div style={{ fontSize: 12, lineHeight: 1.5, opacity: 0.75 }}>
+                  {description}
+                </div>
+                <div
+                  style={{
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: '0.12em',
+                    paddingTop: 2,
+                    color: status === 'ACTIVE' ? '#1a7a1a' : BLUE,
+                    opacity: status === 'ACTIVE' ? 1 : 0.5,
+                  }}
+                >
+                  {status === 'ACTIVE' ? '✓ ' : '◌ '}{status}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ── System footer ─────────────────────────────────── */}
+          <div
+            style={{
+              paddingLeft: 40,
+              paddingTop: 48,
+              fontSize: 9,
+              fontWeight: 600,
+              letterSpacing: '0.12em',
+              opacity: 0.45,
+              lineHeight: 1.8,
+            }}
+          >
+            <div>SYS.REF: CV-LIVE-001</div>
+            <div>UPDATED: 26.03.31</div>
+            <div>ENCODING: UTF-8</div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* X/Y coordinate display — bottom right */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          right: 0,
+          padding: '5px 12px',
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: '0.1em',
+          backgroundColor: BLUE,
+          color: BG,
+          zIndex: 20,
+        }}
+      >
+        X: A | Y: 1
+      </div>
     </div>
   )
 }
