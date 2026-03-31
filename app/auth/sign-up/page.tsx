@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 function CvLiveIcon() {
@@ -18,7 +17,6 @@ function CvLiveIcon() {
 }
 
 export default function SignUpPage() {
-  const router = useRouter()
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
