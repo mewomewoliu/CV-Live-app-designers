@@ -6,17 +6,19 @@ import { useCVStore } from '@/lib/cv-store'
 export function SkillsForm() {
   const { cv, updateSkills } = useCVStore()
   const [input, setInput] = useState('')
+  if (!cv) return null
+  const skills = cv.skills
 
   function addSkill(value: string) {
     const trimmed = value.trim().replace(/,+$/, '')
-    if (trimmed && !cv.skills.includes(trimmed)) {
-      updateSkills([...cv.skills, trimmed])
+    if (trimmed && !skills.includes(trimmed)) {
+      updateSkills([...skills, trimmed])
     }
     setInput('')
   }
 
   function removeSkill(skill: string) {
-    updateSkills(cv.skills.filter((s) => s !== skill))
+    updateSkills(skills.filter((s) => s !== skill))
   }
 
   return (
@@ -26,7 +28,7 @@ export function SkillsForm() {
       </p>
 
       <div className="flex flex-wrap gap-2">
-        {cv.skills.map((skill) => (
+        {skills.map((skill) => (
           <span
             key={skill}
             className="inline-flex items-center gap-1.5 text-xs border border-zinc-300 rounded-full px-3 py-1 text-zinc-700 bg-white"
@@ -40,7 +42,7 @@ export function SkillsForm() {
             </button>
           </span>
         ))}
-        {cv.skills.length === 0 && (
+        {skills.length === 0 && (
           <p className="text-xs text-zinc-400 italic">No skills added yet</p>
         )}
       </div>

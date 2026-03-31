@@ -9,22 +9,24 @@ const LEVELS: CVLanguage['level'][] = ['Native', 'Fluent', 'Professional', 'Basi
 
 export function LanguagesForm() {
   const { cv, updateLanguages } = useCVStore()
+  if (!cv) return null
+  const languages = cv.languages
 
   function addLanguage() {
-    updateLanguages([...cv.languages, { id: uuidv4(), name: '', level: 'Fluent' }])
+    updateLanguages([...languages, { id: uuidv4(), name: '', level: 'Fluent' }])
   }
 
   function updateLang(id: string, updates: Partial<CVLanguage>) {
-    updateLanguages(cv.languages.map((l) => (l.id === id ? { ...l, ...updates } : l)))
+    updateLanguages(languages.map((l) => (l.id === id ? { ...l, ...updates } : l)))
   }
 
   function removeLang(id: string) {
-    updateLanguages(cv.languages.filter((l) => l.id !== id))
+    updateLanguages(languages.filter((l) => l.id !== id))
   }
 
   return (
     <div className="flex flex-col gap-3">
-      {cv.languages.map((lang) => (
+      {languages.map((lang) => (
         <div key={lang.id} className="flex items-center gap-2">
           <input
             type="text"

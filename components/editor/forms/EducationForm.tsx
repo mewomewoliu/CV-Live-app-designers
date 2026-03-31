@@ -8,8 +8,9 @@ import { Plus, Trash2, ChevronRight } from 'lucide-react'
 export function EducationForm() {
   const { cv, updateEducation, addEducation, removeEducation } = useCVStore()
   const [openIds, setOpenIds] = useState<Set<string>>(
-    new Set(cv.education[0] ? [cv.education[0].id] : [])
+    new Set(cv?.education[0] ? [cv.education[0].id] : [])
   )
+  if (!cv) return null
 
   function toggleOpen(id: string) {
     setOpenIds((prev) => {

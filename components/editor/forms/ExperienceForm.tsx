@@ -205,6 +205,7 @@ function ExperienceCard({
 
 export function ExperienceForm() {
   const { cv, updateExperience, addExperience, removeExperience, moveExperience } = useCVStore()
+  if (!cv) return null
 
   return (
     <div className="flex flex-col gap-3">

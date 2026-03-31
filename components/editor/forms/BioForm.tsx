@@ -5,6 +5,7 @@ import { FormField } from '../FormField'
 
 export function BioForm() {
   const { cv, updateBio } = useCVStore()
+  if (!cv) return null
   const bio = cv.bio
 
   return (
