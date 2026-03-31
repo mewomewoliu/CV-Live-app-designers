@@ -4,16 +4,35 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
-function CvLiveIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <rect width="20" height="20" rx="4" fill="#18181b" />
-      <rect x="5" y="7" width="6" height="1.5" rx="0.75" fill="white" opacity="0.9" />
-      <rect x="5" y="10" width="9" height="1.5" rx="0.75" fill="white" opacity="0.9" />
-      <rect x="5" y="13" width="7.5" height="1.5" rx="0.75" fill="white" opacity="0.9" />
-      <circle cx="15" cy="6.5" r="2.5" fill="#4ade80" />
-    </svg>
-  )
+const BLUE = '#1111cc'
+const BG = '#f3f4e8'
+const GRID = 'rgba(10, 10, 180, 0.12)'
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  backgroundColor: 'rgba(255,255,255,0.65)',
+  border: `1.5px solid rgba(10,10,180,0.25)`,
+  padding: '10px 12px',
+  fontSize: 13,
+  color: BLUE,
+  outline: 'none',
+  boxSizing: 'border-box',
+  fontFamily: 'inherit',
+  borderRadius: 0,
+}
+
+const pageStyle: React.CSSProperties = {
+  minHeight: '100vh',
+  backgroundColor: BG,
+  backgroundImage: `
+    linear-gradient(to right, ${GRID} 1px, transparent 1px),
+    linear-gradient(to bottom, ${GRID} 1px, transparent 1px)
+  `,
+  backgroundSize: '40px 40px',
+  color: BLUE,
+  fontFamily: 'var(--font-inter), Inter, sans-serif',
+  display: 'flex',
+  flexDirection: 'column',
 }
 
 export default function SignUpPage() {
@@ -50,24 +69,66 @@ export default function SignUpPage() {
 
   if (sent) {
     return (
-      <div className="min-h-screen bg-zinc-50 flex flex-col">
-        <header className="h-14 bg-white border-b border-zinc-200 flex items-center px-5">
-          <Link href="/" className="flex items-center gap-2">
-            <CvLiveIcon />
-            <span className="text-sm font-black tracking-tighter text-zinc-900">CV.live</span>
+      <div style={pageStyle}>
+        <header
+          style={{
+            height: 48,
+            backgroundColor: BG,
+            borderBottom: `1px solid rgba(10,10,180,0.2)`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '0 24px',
+            flexShrink: 0,
+          }}
+        >
+          <Link href="/" style={{ textDecoration: 'none', color: BLUE }}>
+            <span style={{ fontSize: 13, fontWeight: 900, letterSpacing: '-0.02em' }}>CV.live</span>
           </Link>
+          <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.15em', opacity: 0.4 }}>
+            AUTH // SIGN-UP
+          </span>
         </header>
-        <main className="flex-1 flex items-center justify-center px-6 py-16">
-          <div className="w-full max-w-sm text-center">
-            <div className="w-10 h-10 rounded-full bg-green-50 border border-green-200 flex items-center justify-center mx-auto mb-5">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                <path d="M3 9l4 4 8-8" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <main
+          style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '40px 24px',
+          }}
+        >
+          <div style={{ width: '100%', maxWidth: 360, textAlign: 'center' }}>
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                border: `1.5px solid rgba(10,10,180,0.3)`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 20px',
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2 8l4 4 8-8" stroke={BLUE} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <h1 className="text-2xl font-black tracking-tight text-zinc-900 mb-3">Check your email</h1>
-            <p className="text-sm text-zinc-500 leading-relaxed">
+            <h1
+              style={{
+                fontSize: 22,
+                fontWeight: 900,
+                letterSpacing: '-0.02em',
+                margin: '0 0 12px',
+                color: BLUE,
+              }}
+            >
+              Check your email
+            </h1>
+            <p style={{ fontSize: 12, opacity: 0.65, lineHeight: 1.7, margin: 0 }}>
               We sent a confirmation link to{' '}
-              <span className="text-zinc-900 font-medium">{email}</span>.
+              <span style={{ fontWeight: 700 }}>{email}</span>.
+              <br />
               Click it to activate your account.
             </p>
           </div>
@@ -77,34 +138,78 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col">
-      {/* Nav — matches editor toolbar */}
-      <header className="h-14 bg-white border-b border-zinc-200 flex items-center px-5">
-        <Link href="/" className="flex items-center gap-2">
-          <CvLiveIcon />
-          <span className="text-sm font-black tracking-tighter text-zinc-900">CV.live</span>
+    <div style={pageStyle}>
+      {/* Nav */}
+      <header
+        style={{
+          height: 48,
+          backgroundColor: BG,
+          borderBottom: `1px solid rgba(10,10,180,0.2)`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 24px',
+          flexShrink: 0,
+        }}
+      >
+        <Link href="/" style={{ textDecoration: 'none', color: BLUE }}>
+          <span style={{ fontSize: 13, fontWeight: 900, letterSpacing: '-0.02em' }}>CV.live</span>
         </Link>
+        <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.15em', opacity: 0.4 }}>
+          AUTH // SIGN-UP
+        </span>
       </header>
 
       {/* Form */}
-      <main className="flex-1 flex items-center justify-center px-6 py-16">
-        <div className="w-full max-w-sm">
-          <h1 className="text-2xl font-black tracking-tight text-zinc-900 mb-1">Create your account</h1>
-          <p className="text-sm text-zinc-500 mb-8">
-            Already have one?{' '}
-            <Link
-              href="/auth/sign-in"
-              className="text-zinc-900 underline underline-offset-2 hover:text-zinc-600 transition-colors"
+      <main
+        style={{
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '40px 24px',
+        }}
+      >
+        <div style={{ width: '100%', maxWidth: 360 }}>
+          <div style={{ marginBottom: 32 }}>
+            <h1
+              style={{
+                fontSize: 28,
+                fontWeight: 900,
+                letterSpacing: '-0.02em',
+                margin: '0 0 8px',
+                color: BLUE,
+              }}
             >
-              Sign in
-            </Link>
-          </p>
+              Create account
+            </h1>
+            <p style={{ fontSize: 12, margin: 0, opacity: 0.65 }}>
+              Already have one?{' '}
+              <Link
+                href="/auth/sign-in"
+                style={{ color: BLUE, fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: 3 }}
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {/* Name row */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <div>
-                <label htmlFor="firstName" className="block text-xs font-medium text-zinc-500 mb-1.5">
-                  First name
+                <label
+                  htmlFor="firstName"
+                  style={{
+                    display: 'block',
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: '0.15em',
+                    marginBottom: 6,
+                    opacity: 0.55,
+                  }}
+                >
+                  FIRST NAME
                 </label>
                 <input
                   id="firstName"
@@ -114,12 +219,24 @@ export default function SignUpPage() {
                   required
                   autoComplete="given-name"
                   placeholder="Mia"
-                  className="w-full bg-white border border-zinc-200 rounded px-3 py-2.5 text-sm text-zinc-900 placeholder-zinc-300 focus:outline-none focus:border-zinc-400 transition-colors"
+                  style={inputStyle}
+                  onFocus={(e) => (e.target.style.borderColor = BLUE)}
+                  onBlur={(e) => (e.target.style.borderColor = 'rgba(10,10,180,0.25)')}
                 />
               </div>
               <div>
-                <label htmlFor="lastName" className="block text-xs font-medium text-zinc-500 mb-1.5">
-                  Last name
+                <label
+                  htmlFor="lastName"
+                  style={{
+                    display: 'block',
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: '0.15em',
+                    marginBottom: 6,
+                    opacity: 0.55,
+                  }}
+                >
+                  LAST NAME
                 </label>
                 <input
                   id="lastName"
@@ -129,14 +246,26 @@ export default function SignUpPage() {
                   required
                   autoComplete="family-name"
                   placeholder="Liu"
-                  className="w-full bg-white border border-zinc-200 rounded px-3 py-2.5 text-sm text-zinc-900 placeholder-zinc-300 focus:outline-none focus:border-zinc-400 transition-colors"
+                  style={inputStyle}
+                  onFocus={(e) => (e.target.style.borderColor = BLUE)}
+                  onBlur={(e) => (e.target.style.borderColor = 'rgba(10,10,180,0.25)')}
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-xs font-medium text-zinc-500 mb-1.5">
-                Email
+              <label
+                htmlFor="email"
+                style={{
+                  display: 'block',
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: '0.15em',
+                  marginBottom: 6,
+                  opacity: 0.55,
+                }}
+              >
+                EMAIL
               </label>
               <input
                 id="email"
@@ -146,13 +275,25 @@ export default function SignUpPage() {
                 required
                 autoComplete="email"
                 placeholder="mia@example.com"
-                className="w-full bg-white border border-zinc-200 rounded px-3 py-2.5 text-sm text-zinc-900 placeholder-zinc-300 focus:outline-none focus:border-zinc-400 transition-colors"
+                style={inputStyle}
+                onFocus={(e) => (e.target.style.borderColor = BLUE)}
+                onBlur={(e) => (e.target.style.borderColor = 'rgba(10,10,180,0.25)')}
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-xs font-medium text-zinc-500 mb-1.5">
-                Password
+              <label
+                htmlFor="password"
+                style={{
+                  display: 'block',
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: '0.15em',
+                  marginBottom: 6,
+                  opacity: 0.55,
+                }}
+              >
+                PASSWORD
               </label>
               <input
                 id="password"
@@ -163,22 +304,46 @@ export default function SignUpPage() {
                 minLength={8}
                 autoComplete="new-password"
                 placeholder="8+ characters"
-                className="w-full bg-white border border-zinc-200 rounded px-3 py-2.5 text-sm text-zinc-900 placeholder-zinc-300 focus:outline-none focus:border-zinc-400 transition-colors"
+                style={inputStyle}
+                onFocus={(e) => (e.target.style.borderColor = BLUE)}
+                onBlur={(e) => (e.target.style.borderColor = 'rgba(10,10,180,0.25)')}
               />
             </div>
 
             {error && (
-              <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2.5">
+              <div
+                style={{
+                  fontSize: 11,
+                  color: '#cc1111',
+                  backgroundColor: 'rgba(204,17,17,0.06)',
+                  border: '1px solid rgba(204,17,17,0.2)',
+                  padding: '8px 12px',
+                  letterSpacing: '0.02em',
+                  lineHeight: 1.5,
+                }}
+              >
                 {error}
-              </p>
+              </div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-zinc-900 text-white text-sm font-semibold py-2.5 rounded hover:bg-zinc-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+              style={{
+                backgroundColor: BLUE,
+                color: BG,
+                border: 'none',
+                padding: '12px 20px',
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? 0.7 : 1,
+                fontFamily: 'inherit',
+                marginTop: 4,
+              }}
             >
-              {loading ? 'Creating account…' : 'Create account'}
+              {loading ? 'CREATING ACCOUNT…' : 'CREATE ACCOUNT →'}
             </button>
           </form>
         </div>

@@ -6,9 +6,10 @@ import { CVData } from '@/lib/cv-types'
 interface Props {
   cvData: CVData
   className?: string
+  style?: React.CSSProperties
 }
 
-export function DownloadPDFButton({ cvData, className }: Props) {
+export function DownloadPDFButton({ cvData, className, style }: Props) {
   const [loading, setLoading] = useState(false)
 
   async function handleDownload() {
@@ -40,6 +41,7 @@ export function DownloadPDFButton({ cvData, className }: Props) {
       onClick={handleDownload}
       disabled={loading}
       className={className}
+      style={style}
     >
       {loading ? 'Generating…' : 'Download PDF ↓'}
     </button>
