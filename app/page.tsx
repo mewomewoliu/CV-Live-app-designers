@@ -51,7 +51,6 @@ export default function Home() {
   return (
     <div
       style={{
-        minHeight: '100vh',
         backgroundColor: BG,
         backgroundImage: `
           linear-gradient(to right, ${GRID} 1px, transparent 1px),
@@ -139,7 +138,7 @@ export default function Home() {
         </div>
 
         {/* ── Content ──────────────────────────────────────────────── */}
-        <div style={{ flex: 1, position: 'relative', paddingBottom: 80 }}>
+        <div style={{ flex: 1, position: 'relative', paddingBottom: 0 }}>
 
           {/* Navigation — top right */}
           <nav
@@ -406,6 +405,7 @@ export default function Home() {
             style={{
               paddingLeft: 40,
               paddingTop: 48,
+              paddingBottom: 48,
               fontSize: 9,
               fontWeight: 600,
               letterSpacing: '0.12em',
@@ -421,22 +421,139 @@ export default function Home() {
         </div>
       </div>
 
-      {/* X/Y coordinate display — bottom right */}
+      {/* ── Founder footer ──────────────────────────────────────── */}
       <div
         style={{
-          position: 'fixed',
-          bottom: 0,
-          right: 0,
-          padding: '5px 12px',
-          fontSize: 10,
-          fontWeight: 700,
-          letterSpacing: '0.1em',
-          backgroundColor: BLUE,
-          color: BG,
-          zIndex: 20,
+          borderTop: `1.5px solid ${BLUE}`,
+          display: 'grid',
+          gridTemplateColumns: '48px 1fr',
         }}
       >
-        X: A | Y: 1
+        {/* row label spacer */}
+        <div style={{ borderRight: `1px solid rgba(10,10,180,0.2)` }} />
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr',
+            gap: '0 40px',
+            padding: '40px 40px 40px 40px',
+          }}
+        >
+          {/* Contact */}
+          <div>
+            <div
+              style={{
+                fontSize: 9,
+                fontWeight: 700,
+                letterSpacing: '0.15em',
+                marginBottom: 16,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <span style={{ width: 6, height: 6, backgroundColor: BLUE, display: 'inline-block', flexShrink: 0 }} />
+              FOUNDER
+            </div>
+            <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>Mia Liu</div>
+            <div style={{ fontSize: 11, opacity: 0.6, lineHeight: 1.7 }}>
+              <div>UXMIA1996@GMAIL.COM</div>
+              <div>STOCKHOLM, SWEDEN</div>
+            </div>
+          </div>
+
+          {/* Connect */}
+          <div>
+            <div
+              style={{
+                fontSize: 9,
+                fontWeight: 700,
+                letterSpacing: '0.15em',
+                marginBottom: 16,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <span style={{ width: 6, height: 6, backgroundColor: BLUE, display: 'inline-block', flexShrink: 0 }} />
+              CONNECT
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {[
+                { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/mia-liu-ici-design/' },
+                { label: 'MEDIUM', href: 'https://medium.com/@mewomewoliu' },
+                { label: 'WEBSITE', href: 'https://www.mialiu.se/' },
+              ].map(({ label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: BLUE,
+                    textDecoration: 'none',
+                    letterSpacing: '0.05em',
+                    opacity: 0.8,
+                  }}
+                >
+                  {label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Availability */}
+          <div>
+            <div
+              style={{
+                fontSize: 9,
+                fontWeight: 700,
+                letterSpacing: '0.15em',
+                marginBottom: 16,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <span style={{ width: 6, height: 6, backgroundColor: BLUE, display: 'inline-block', flexShrink: 0 }} />
+              AVAILABILITY
+            </div>
+            <div style={{ fontSize: 12, lineHeight: 1.7, opacity: 0.75, maxWidth: 240 }}>
+              OPEN TO CONSULTING,<br />
+              PRODUCT DESIGN ROLES,<br />
+              AND CONVERSATIONS.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Copyright bar ───────────────────────────────────────── */}
+      <div
+        style={{
+          borderTop: `1px solid rgba(10,10,180,0.2)`,
+          display: 'grid',
+          gridTemplateColumns: '48px 1fr',
+        }}
+      >
+        <div style={{ borderRight: `1px solid rgba(10,10,180,0.2)` }} />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '10px 40px',
+            fontSize: 9,
+            fontWeight: 600,
+            letterSpacing: '0.12em',
+            opacity: 0.45,
+          }}
+        >
+          <span>© 2026 CRAFTED BY MIA WITH CLAUDE CODE</span>
+          <span>CV.LIVE</span>
+        </div>
       </div>
     </div>
   )
