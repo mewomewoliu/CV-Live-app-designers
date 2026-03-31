@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useCVStore } from '@/lib/cv-store'
+import type { CVData } from '@/lib/cv-types'
 import { EditorToolbar } from './EditorToolbar'
 import { PreviewPane } from './PreviewPane'
 import { BioForm } from './forms/BioForm'
@@ -20,16 +21,21 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'languages', label: 'Languages' },
 ]
 
-export function EditorLayout() {
+interface EditorLayoutProps {
+  initialCV: CVData
+  isPublished: boolean
+}
+
+export function EditorLayout({ initialCV, isPublished }: EditorLayoutProps) {
   const [activeTab, setActiveTab] = useState<Tab>('bio')
-  const [hydrated, setHydrated] = useState(false)
+  const { loadCV, isLoading } = useCVStore()
 
   useEffect(() => {
-    useCVStore.persist.rehydrate()
-    setHydrated(true)
-  }, [])
+    loadCV(initialCV)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Only run on mount — initialCV is stable from server
 
-  if (!hydrated) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-zinc-50">
         <div className="text-sm text-zinc-400 font-mono">Loading…</div>
@@ -39,7 +45,7 @@ export function EditorLayout() {
 
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-zinc-50">
-      <EditorToolbar />
+      <EditorToolbar isPublished={isPublished} />
 
       <div className="flex flex-1 overflow-hidden">
         {/* Left panel — forms */}
