@@ -8,7 +8,6 @@ const COLS = [
   'AW','AX','AY','AZ',
 ]
 
-const ROWS = Array.from({ length: 52 }, (_, i) => i + 1)
 
 const FEATURES = [
   {
@@ -108,7 +107,7 @@ export default function Home() {
 
       {/* ── Main layout: row labels + content ────────────────────── */}
       <div style={{ display: 'flex' }}>
-        {/* Row labels */}
+        {/* Row label spacer — fixed width, no fixed height */}
         <div
           style={{
             width: 48,
@@ -116,26 +115,7 @@ export default function Home() {
             borderRight: `1px solid rgba(10,10,180,0.2)`,
             flexShrink: 0,
           }}
-        >
-          {ROWS.map((n) => (
-            <div
-              key={n}
-              style={{
-                height: 40,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                paddingRight: 7,
-                fontSize: 9,
-                fontWeight: 500,
-                color: `rgba(10,10,180,0.35)`,
-                borderBottom: `1px solid rgba(10,10,180,0.04)`,
-              }}
-            >
-              {n}
-            </div>
-          ))}
-        </div>
+        />
 
         {/* ── Content ──────────────────────────────────────────────── */}
         <div style={{ flex: 1, position: 'relative', paddingBottom: 0 }}>
