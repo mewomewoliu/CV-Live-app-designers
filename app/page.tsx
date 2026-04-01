@@ -133,7 +133,7 @@ export default function Home() {
             }}
           >
             {[
-              { label: 'BUILD YOUR CV  [A]', href: '/editor' },
+              { label: 'BUILD YOUR CV  [A]', href: '/auth/sign-up' },
               { label: 'SIGN IN  [B]', href: '/auth/sign-in' },
               { label: 'GIVE FEEDBACK  [C]', href: 'mailto:hello@cv.live' },
             ].map(({ label, href }) => (
@@ -230,7 +230,7 @@ export default function Home() {
               </p>
               <div style={{ display: 'flex', gap: 12, marginTop: 28 }}>
                 <Link
-                  href="/editor"
+                  href="/auth/sign-up"
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',

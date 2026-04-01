@@ -55,7 +55,7 @@ export default function SignUpPage() {
       password,
       options: {
         data: { firstName, lastName },
-        emailRedirectTo: `${location.origin}/auth/callback`,
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback?next=/auth/sign-in`,
       },
     })
 
