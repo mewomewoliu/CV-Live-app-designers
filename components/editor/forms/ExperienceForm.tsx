@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useCVStore } from '@/lib/cv-store'
 import { CVExperience } from '@/lib/cv-types'
 import { FormField } from '../FormField'
-import { Plus, Trash2, ChevronUp, ChevronDown, ChevronRight } from 'lucide-react'
+import { Plus, Trash2, ChevronUp, ChevronDown, ChevronRight, Eye, EyeOff } from 'lucide-react'
 
 function TagInput({ tags, onChange }: { tags: string[]; onChange: (tags: string[]) => void }) {
   const [input, setInput] = useState('')
@@ -71,6 +71,7 @@ function ExperienceCard({
   onRemove,
   onMoveUp,
   onMoveDown,
+  onToggleHidden,
 }: {
   exp: CVExperience
   index: number
@@ -79,12 +80,13 @@ function ExperienceCard({
   onRemove: () => void
   onMoveUp: () => void
   onMoveDown: () => void
+  onToggleHidden: () => void
 }) {
   const [open, setOpen] = useState(index === 0)
   const [isPresent, setIsPresent] = useState(exp.endDate === 'Present')
 
   return (
-    <div className="border border-zinc-200 rounded-lg overflow-hidden">
+    <div className={`border rounded-lg overflow-hidden transition-opacity ${exp.hidden ? 'border-zinc-200 opacity-50' : 'border-zinc-200'}`}>
       {/* Header */}
       <div
         className="flex items-center gap-2 px-3 py-2.5 bg-zinc-50 cursor-pointer hover:bg-zinc-100 transition-colors"
@@ -95,7 +97,7 @@ function ExperienceCard({
           className={`text-zinc-400 transition-transform flex-shrink-0 ${open ? 'rotate-90' : ''}`}
         />
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-zinc-800 truncate">
+          <p className={`text-sm font-medium truncate ${exp.hidden ? 'text-zinc-400 line-through' : 'text-zinc-800'}`}>
             {exp.title || 'New Role'}
           </p>
           <p className="text-[11px] text-zinc-500 truncate">{exp.company} · {exp.startDate} – {exp.endDate}</p>
@@ -114,6 +116,13 @@ function ExperienceCard({
             className="p-1 text-zinc-400 hover:text-zinc-700 disabled:opacity-30 transition-colors"
           >
             <ChevronDown size={13} />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); onToggleHidden() }}
+            className="p-1 text-zinc-400 hover:text-zinc-700 transition-colors"
+            title={exp.hidden ? 'Show on CV' : 'Hide from CV'}
+          >
+            {exp.hidden ? <EyeOff size={13} /> : <Eye size={13} />}
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); onRemove() }}
@@ -219,6 +228,7 @@ export function ExperienceForm() {
           onRemove={() => removeExperience(exp.id)}
           onMoveUp={() => moveExperience(i, i - 1)}
           onMoveDown={() => moveExperience(i, i + 1)}
+          onToggleHidden={() => updateExperience(exp.id, { hidden: !exp.hidden })}
         />
       ))}
       <button

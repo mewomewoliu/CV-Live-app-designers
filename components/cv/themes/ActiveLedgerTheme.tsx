@@ -9,11 +9,11 @@ interface Props {
 
 const linkStyle: React.CSSProperties = { color: 'inherit', textDecoration: 'none' }
 
-const bg = '#e8eca0'
+const bg = '#ffffff'
 const ink = '#1a1a1a'
-const inkDim = '#4a4a3a'
-const inkMuted = '#7a7a5a'
-const border = '#c5c97a'
+const inkDim = '#71717a '
+const inkMuted = '#a1a1aa'
+const border = '#e4e4e7'
 
 function SectionMarker({ index, title, tag }: { index: string; title: string; tag?: string }) {
   return (
@@ -102,11 +102,11 @@ function ExperienceItem({ exp, index }: { exp: CVExperience; index: number }) {
 export function ActiveLedgerTheme({ data, context }: Props) {
   const { bio, experience, skills, education, languages } = data
   const fullName = `${bio.firstName} ${bio.lastName}`
-  const pageOneExp = experience.slice(0, 3)
-  const pageTwoExp = experience.slice(3, 6)
-  const pageThreeExp = experience.slice(6)
-  const hasPage2 = pageTwoExp.length > 0 || (pageThreeExp.length === 0 && (education.length > 0 || languages.length > 0))
-  const hasPage3 = pageThreeExp.length > 0 || (pageTwoExp.length > 0 && (education.length > 0 || languages.length > 0))
+  const pageOneExp = experience.slice(0, 5)
+  const pageTwoExp = experience.slice(5, 8)
+  const pageThreeExp = experience.slice(8)
+  const hasPage2 = pageTwoExp.length > 0
+  const hasPage3 = pageThreeExp.length > 0
 
   const today = new Date()
   const updatedStr = `${String(today.getDate()).padStart(2,'0')}.${String(today.getMonth()+1).padStart(2,'0')}.${String(today.getFullYear()).slice(2)}`
@@ -193,25 +193,10 @@ export function ActiveLedgerTheme({ data, context }: Props) {
                 <span style={{ color: inkMuted }}>↗</span>
               </div>
             )}
-            {context.mode === 'web' && (
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>DOWNLOAD.PDF</span>
-                <span style={{ color: inkMuted }}>↓</span>
-              </div>
-            )}
+            
           </div>
 
-          {/* Summary */}
-          {bio.summary && (
-            <>
-              <div style={{ width: '100%', height: '1px', backgroundColor: border }} />
-              <div style={{ fontSize: '0.68rem', lineHeight: 1.65, color: inkDim }}>
-                {bio.summary}
-              </div>
-            </>
-          )}
-
-          {/* Skills */}
+          {/* Skills / Capabilities */}
           {skills.length > 0 && (
             <>
               <div style={{ width: '100%', height: '1px', backgroundColor: border }} />
@@ -221,23 +206,48 @@ export function ActiveLedgerTheme({ data, context }: Props) {
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem' }}>
                   {skills.map((s) => (
-                    <span
-                      key={s}
-                      style={{
-                        fontSize: '0.6rem',
-                        border: `1px solid ${border}`,
-                        color: inkMuted,
-                        padding: '0.15rem 0.5rem',
-                        borderRadius: '99px',
-                        display: 'inline-block',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.03em',
-                      }}
-                    >
+                    <span key={s} style={{ fontSize: '0.6rem', border: `1px solid ${border}`, color: inkMuted, padding: '0.15rem 0.5rem', borderRadius: '99px', display: 'inline-block', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                       {s}
                     </span>
                   ))}
                 </div>
+              </div>
+            </>
+          )}
+
+          {/* Education */}
+          {education.length > 0 && (
+            <>
+              <div style={{ width: '100%', height: '1px', backgroundColor: border }} />
+              <div>
+                <div style={{ fontSize: '0.58rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: inkMuted, marginBottom: '0.5rem', fontFamily: 'ui-monospace, monospace' }}>
+                  Education
+                </div>
+                {education.map((edu) => (
+                  <div key={edu.id} style={{ marginBottom: '0.65rem' }}>
+                    <div style={{ fontSize: '0.7rem', fontWeight: 400, lineHeight: 1.3, color: ink }}>{edu.degree}</div>
+                    <div style={{ fontSize: '0.65rem', color: inkDim, fontFamily: 'ui-monospace, monospace', marginTop: '0.1rem' }}>{edu.institution}</div>
+                    {edu.endDate && <div style={{ fontSize: '0.62rem', color: inkMuted, fontFamily: 'ui-monospace, monospace' }}>{edu.startDate} — {edu.endDate}</div>}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Languages */}
+          {languages.length > 0 && (
+            <>
+              <div style={{ width: '100%', height: '1px', backgroundColor: border }} />
+              <div>
+                <div style={{ fontSize: '0.58rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: inkMuted, marginBottom: '0.5rem', fontFamily: 'ui-monospace, monospace' }}>
+                  Languages
+                </div>
+                {languages.map((lang) => (
+                  <div key={lang.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem', fontSize: '0.7rem' }}>
+                    <span style={{ color: ink }}>{lang.name}</span>
+                    <span style={{ color: inkMuted, fontSize: '0.62rem', fontFamily: 'ui-monospace, monospace' }}>{lang.level.toUpperCase()}</span>
+                  </div>
+                ))}
               </div>
             </>
           )}
@@ -291,41 +301,10 @@ export function ActiveLedgerTheme({ data, context }: Props) {
 
           {pageTwoExp.length > 0 && (
             <div>
-              <SectionMarker index="01" title="Experience cont."  />
+              <SectionMarker index="01" title="Experience cont." />
               {pageTwoExp.map((exp, i) => (
                 <ExperienceItem key={exp.id} exp={exp} index={pageOneExp.length + i} />
               ))}
-            </div>
-          )}
-
-          {/* Education + Languages — only if no page 3 */}
-          {!hasPage3 && (education.length > 0 || languages.length > 0) && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', marginTop: '1rem' }}>
-              {education.length > 0 && (
-                <div>
-                  <SectionMarker index="02" title="Education" />
-                  {education.map((edu) => (
-                    <div key={edu.id} style={{ marginBottom: '0.85rem' }}>
-                      <div style={{ width: '100%', height: '1px', backgroundColor: border, marginBottom: '0.5rem' }} />
-                      <div style={{ fontSize: '0.78rem', fontWeight: 500, letterSpacing: '-0.01em', marginBottom: '0.1rem' }}>{edu.degree}</div>
-                      <div style={{ fontSize: '0.65rem', color: inkDim }}>{edu.institution}</div>
-                      <div style={{ fontSize: '0.6rem', color: inkMuted, fontFamily: 'ui-monospace, monospace', marginTop: '0.1rem' }}>{edu.startDate} — {edu.endDate}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {languages.length > 0 && (
-                <div>
-                  <SectionMarker index={education.length > 0 ? '03' : '02'} title="Languages" />
-                  <div style={{ width: '100%', height: '1px', backgroundColor: border, marginBottom: '0.75rem' }} />
-                  {languages.map((lang) => (
-                    <div key={lang.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.75rem' }}>
-                      <span>{lang.name}</span>
-                      <span style={{ color: inkMuted, fontSize: '0.65rem', fontFamily: 'ui-monospace, monospace' }}>{lang.level.toUpperCase()}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           )}
         </div>

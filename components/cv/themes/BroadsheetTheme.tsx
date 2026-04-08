@@ -11,7 +11,7 @@ const bg = '#F2F1EB'
 const ink = '#0A0A0A'
 const inkDim = '#4A4A4A'
 const inkMuted = '#888888'
-const mono = `"Courier New", "Courier", monospace`
+const mono = `Helvetica, Arial, sans-serif`
 
 const linkStyle: React.CSSProperties = { color: 'inherit', textDecoration: 'none' }
 
@@ -214,8 +214,8 @@ export function BroadsheetTheme({ data, context }: Props) {
   const pageOneExp = experience.slice(0, 3)
   const pageTwoExp = experience.slice(3, 6)
   const pageThreeExp = experience.slice(6)
-  const hasPage2 = pageTwoExp.length > 0 || (pageThreeExp.length === 0 && (education.length > 0 || languages.length > 0))
-  const hasPage3 = pageThreeExp.length > 0 || (pageTwoExp.length > 0 && (education.length > 0 || languages.length > 0))
+  const hasPage2 = pageTwoExp.length > 0
+  const hasPage3 = pageThreeExp.length > 0
 
   const today = new Date()
   const updatedStr = `${String(today.getFullYear())}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`
@@ -223,62 +223,6 @@ export function BroadsheetTheme({ data, context }: Props) {
   const pageStyle = context.isPdfRender
     ? { width: '210mm', minHeight: '297mm', boxSizing: 'border-box' as const }
     : { width: '100%', maxWidth: '210mm', minHeight: '297mm', boxSizing: 'border-box' as const }
-
-  /* ── Education + Languages content (shared across pages) ── */
-  const eduLangSection = (
-    <>
-      {education.length > 0 && (
-        <div>
-          <SectionHeader index="02" title="Archival Data" />
-          {education.map((edu) => (
-            <div key={edu.id} style={{ paddingBottom: '1.1rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.1rem' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.35rem' }}>
-                  <span style={{ fontFamily: mono, fontSize: '0.62rem', color: inkDim, flexShrink: 0, lineHeight: 1.6 }}>▸</span>
-                  <span style={{ fontFamily: mono, fontSize: '0.85rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.04em', color: ink }}>
-                    {edu.institution}
-                  </span>
-                </div>
-                <span style={{ fontFamily: mono, fontSize: '0.58rem', color: inkDim, whiteSpace: 'nowrap' }}>
-                  {edu.startDate} — {edu.endDate}
-                </span>
-              </div>
-              <div style={{
-                fontFamily: mono, fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.06em',
-                fontWeight: 700, color: inkDim, marginLeft: '1rem', marginBottom: '0.3rem',
-                paddingBottom: '0.3rem', borderBottom: '1px solid rgba(0,0,0,0.14)',
-              }}>
-                {edu.degree}
-              </div>
-              {edu.description && (
-                <div style={{ fontFamily: mono, fontSize: '0.63rem', color: ink, marginLeft: '1rem', lineHeight: 1.65 }}>
-                  {edu.description}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {languages.length > 0 && (
-        <div>
-          <SectionHeader index={education.length > 0 ? '03' : '02'} title="Languages" />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.22rem 2rem' }}>
-            {languages.map(lang => (
-              <div key={lang.id} style={{
-                display: 'flex', justifyContent: 'space-between',
-                fontFamily: mono, fontSize: '0.63rem',
-                paddingBottom: '0.3rem', borderBottom: '1px solid rgba(0,0,0,0.1)',
-              }}>
-                <span style={{ textTransform: 'uppercase', letterSpacing: '0.04em', color: ink, fontWeight: 700 }}>{lang.name}</span>
-                <span style={{ color: inkMuted }}>{lang.level.toUpperCase()}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </>
-  )
 
   /* ── Full sidebar (page 1) ── */
   const sidebar = (
@@ -340,7 +284,38 @@ export function BroadsheetTheme({ data, context }: Props) {
       {bio.linkedin && <DataRow label="NETWORK" value="LINKEDIN" href={ensureHttp(bio.linkedin)} />}
       {bio.github && <DataRow label="CODE" value="GITHUB" href={ensureHttp(bio.github)} />}
       {bio.website && <DataRow label="WEB" value={bio.website.replace(/^https?:\/\//, '').toUpperCase().slice(0, 20)} href={ensureHttp(bio.website)} />}
-      {context.mode === 'web' && <DataRow label="EXPORT" value="DOWNLOAD PDF" />}
+     
+
+      {/* Education */}
+      {education.length > 0 && (
+        <>
+          <SysHeader label="Education" sysRef={`SYS.0${skills.length > 0 ? 4 : 3}`} />
+          {education.map((edu) => (
+            <div key={edu.id} style={{ marginBottom: '0.45rem' }}>
+              <div style={{ fontFamily: mono, fontSize: '0.56rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: ink, paddingBottom: '0.18rem', marginBottom: '0.1rem', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
+                {edu.institution}
+              </div>
+              <div style={{ fontFamily: mono, fontSize: '0.5rem', color: inkDim, textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+                {edu.degree}
+              </div>
+              {edu.endDate && <div style={{ fontFamily: mono, fontSize: '0.48rem', color: inkMuted }}>{edu.startDate} — {edu.endDate}</div>}
+            </div>
+          ))}
+        </>
+      )}
+
+      {/* Languages */}
+      {languages.length > 0 && (
+        <>
+          <SysHeader label="Languages" sysRef={`SYS.0${skills.length > 0 ? (education.length > 0 ? 5 : 4) : (education.length > 0 ? 4 : 3)}`} />
+          {languages.map((lang) => (
+            <div key={lang.id} style={{ display: 'flex', justifyContent: 'space-between', fontFamily: mono, fontSize: '0.56rem', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.2rem' }}>
+              <span style={{ color: ink, fontWeight: 700 }}>{lang.name}</span>
+              <span style={{ color: inkMuted }}>{lang.level}</span>
+            </div>
+          ))}
+        </>
+      )}
 
       {/* Barcode + part number */}
       <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
@@ -430,15 +405,10 @@ export function BroadsheetTheme({ data, context }: Props) {
           <Corners />
           {sidebarCompact('02')}
           <main style={{ flex: 1, minWidth: 0 }}>
-            {pageTwoExp.length > 0 && (
-              <>
-                <SectionHeader index="01" title="Op. History cont." />
-                {pageTwoExp.map((exp, i) => (
-                  <ExperienceItem key={exp.id} exp={exp} index={pageOneExp.length + i} />
-                ))}
-              </>
-            )}
-            {!hasPage3 && eduLangSection}
+            <SectionHeader index="01" title="Op. History cont." />
+            {pageTwoExp.map((exp, i) => (
+              <ExperienceItem key={exp.id} exp={exp} index={pageOneExp.length + i} />
+            ))}
           </main>
         </div>
       )}
@@ -452,15 +422,10 @@ export function BroadsheetTheme({ data, context }: Props) {
           <Corners />
           {sidebarCompact('03')}
           <main style={{ flex: 1, minWidth: 0 }}>
-            {pageThreeExp.length > 0 && (
-              <>
-                <SectionHeader index="01" title="Op. History cont." />
-                {pageThreeExp.map((exp, i) => (
-                  <ExperienceItem key={exp.id} exp={exp} index={pageOneExp.length + pageTwoExp.length + i} />
-                ))}
-              </>
-            )}
-            {eduLangSection}
+            <SectionHeader index="01" title="Op. History cont." />
+            {pageThreeExp.map((exp, i) => (
+              <ExperienceItem key={exp.id} exp={exp} index={pageOneExp.length + pageTwoExp.length + i} />
+            ))}
           </main>
         </div>
       )}

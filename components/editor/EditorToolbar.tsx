@@ -16,6 +16,8 @@ const THEMES: { id: ThemeId; label: string }[] = [
   { id: 'active-ledger', label: 'Ledger' },
   { id: 'dark', label: 'Dark' },
   { id: 'broadsheet', label: 'Broadsheet' },
+  { id: 'warm-sidebar', label: 'Warm' },
+  { id: 'typewriter', label: 'Typewriter' },
 ]
 
 interface EditorToolbarProps {

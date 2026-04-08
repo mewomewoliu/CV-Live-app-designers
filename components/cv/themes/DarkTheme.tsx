@@ -105,11 +105,11 @@ function ExperienceItem({ exp, index }: { exp: CVExperience; index: number }) {
 export function DarkTheme({ data, context }: Props) {
   const { bio, experience, skills, education, languages } = data
   const fullName = `${bio.firstName} ${bio.lastName}`
-  const pageOneExp = experience.slice(0, 3)
-  const pageTwoExp = experience.slice(3, 6)
-  const pageThreeExp = experience.slice(6)
-  const hasPage2 = pageTwoExp.length > 0 || (pageThreeExp.length === 0 && (education.length > 0 || languages.length > 0))
-  const hasPage3 = pageThreeExp.length > 0 || (pageTwoExp.length > 0 && (education.length > 0 || languages.length > 0))
+  const pageOneExp = experience.slice(0, 5)
+  const pageTwoExp = experience.slice(5, 8)
+  const pageThreeExp = experience.slice(8)
+  const hasPage2 = pageTwoExp.length > 0
+  const hasPage3 = pageThreeExp.length > 0
 
   const today = new Date()
   const updatedStr = `${String(today.getDate()).padStart(2,'0')}.${String(today.getMonth()+1).padStart(2,'0')}.${String(today.getFullYear()).slice(2)}`
@@ -186,14 +186,7 @@ export function DarkTheme({ data, context }: Props) {
             )}
           </div>
 
-          {/* Summary */}
-          {bio.summary && (
-            <div style={{ fontSize: '0.7rem', lineHeight: 1.55, color: inkDim, borderTop: `1px solid ${border}`, paddingTop: '1rem' }}>
-              {bio.summary}
-            </div>
-          )}
-
-          {/* Skills */}
+          {/* Skills / Capabilities */}
           {skills.length > 0 && (
             <div style={{ borderTop: `1px solid ${border}`, paddingTop: '1rem' }}>
               <div style={{ fontSize: '0.58rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: inkMuted, marginBottom: '0.6rem', fontFamily: 'ui-monospace, monospace' }}>
@@ -204,6 +197,45 @@ export function DarkTheme({ data, context }: Props) {
                   <SkillPill key={s} label={s} variant="dark-outlined" size="xs" />
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Education */}
+          {education.length > 0 && (
+            <div style={{ borderTop: `1px solid ${border}`, paddingTop: '1rem' }}>
+              <div style={{ fontSize: '0.58rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: inkMuted, marginBottom: '0.6rem', fontFamily: 'ui-monospace, monospace' }}>
+                Education
+              </div>
+              {education.map((edu) => (
+                <div key={edu.id} style={{ marginBottom: '0.65rem' }}>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 400, lineHeight: 1.3, color: ink }}>
+                    {edu.degree}
+                  </div>
+                  <div style={{ fontSize: '0.65rem', color: inkDim, fontFamily: 'ui-monospace, monospace', marginTop: '0.1rem' }}>
+                    {edu.institution}
+                  </div>
+                  {edu.endDate && (
+                    <div style={{ fontSize: '0.62rem', color: inkMuted, fontFamily: 'ui-monospace, monospace' }}>
+                      {edu.startDate} — {edu.endDate}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Languages */}
+          {languages.length > 0 && (
+            <div style={{ borderTop: `1px solid ${border}`, paddingTop: '1rem' }}>
+              <div style={{ fontSize: '0.58rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: inkMuted, marginBottom: '0.6rem', fontFamily: 'ui-monospace, monospace' }}>
+                Languages
+              </div>
+              {languages.map((lang) => (
+                <div key={lang.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem', fontSize: '0.7rem' }}>
+                  <span style={{ color: ink }}>{lang.name}</span>
+                  <span style={{ color: inkDim, fontSize: '0.62rem', fontFamily: 'ui-monospace, monospace' }}>{lang.level.toUpperCase()}</span>
+                </div>
+              ))}
             </div>
           )}
 
@@ -255,48 +287,10 @@ export function DarkTheme({ data, context }: Props) {
             </span>
           </div>
 
-          {pageTwoExp.length > 0 && (
-            <>
-              <SectionMarker index="01" title="Experience cont."  />
-              {pageTwoExp.map((exp, i) => (
-                <ExperienceItem key={exp.id} exp={exp} index={pageOneExp.length + i} />
-              ))}
-            </>
-          )}
-
-          {/* Show edu/lang on page 2 only if no page 3 */}
-          {!hasPage3 && education.length > 0 && (
-            <>
-              <SectionMarker index="02" title="Academic Credentials" tag="Archived" />
-              {education.map((edu, i) => (
-                <div key={edu.id} style={{ paddingBottom: '0.9rem' }}>
-                  <div style={{ width: '100%', height: '1px', backgroundColor: border, margin: '0 0 0.6rem 0' }} />
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.15rem' }}>
-                    <div style={{ fontSize: '0.82rem', fontWeight: 400, lineHeight: 1.2, letterSpacing: '-0.01em' }}>
-                      {edu.degree}
-                      <span style={{ fontSize: '0.75rem', color: inkDim, marginLeft: '0.4em' }}>({edu.institution})</span>
-                    </div>
-                    <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.58rem', color: inkMuted, whiteSpace: 'nowrap' }}>
-                      EDU-{String(i + 1).padStart(3, '0')}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '0.68rem', color: inkDim, fontFamily: 'ui-monospace, monospace' }}>{edu.startDate} — {edu.endDate}</div>
-                </div>
-              ))}
-            </>
-          )}
-          {!hasPage3 && languages.length > 0 && (
-            <>
-              <SectionMarker index={education.length > 0 ? '03' : '02'} title="Languages" />
-              <StructuralRule />
-              {languages.map((lang) => (
-                <div key={lang.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.6rem', fontSize: '0.78rem' }}>
-                  <span style={{ fontWeight: 400 }}>{lang.name}</span>
-                  <span style={{ color: inkDim, fontSize: '0.68rem', fontFamily: 'ui-monospace, monospace' }}>{lang.level.toUpperCase()}</span>
-                </div>
-              ))}
-            </>
-          )}
+          <SectionMarker index="01" title="Experience cont." />
+          {pageTwoExp.map((exp, i) => (
+            <ExperienceItem key={exp.id} exp={exp} index={pageOneExp.length + i} />
+          ))}
         </div>
       )}
 
@@ -313,48 +307,10 @@ export function DarkTheme({ data, context }: Props) {
             </span>
           </div>
 
-          {pageThreeExp.length > 0 && (
-            <>
-              <SectionMarker index="01" title="Experience cont."  />
-              {pageThreeExp.map((exp, i) => (
-                <ExperienceItem key={exp.id} exp={exp} index={pageOneExp.length + pageTwoExp.length + i} />
-              ))}
-            </>
-          )}
-
-          {education.length > 0 && (
-            <>
-              <SectionMarker index="02" title="Academic Credentials" tag="Archived" />
-              {education.map((edu, i) => (
-                <div key={edu.id} style={{ paddingBottom: '0.9rem' }}>
-                  <div style={{ width: '100%', height: '1px', backgroundColor: border, margin: '0 0 0.6rem 0' }} />
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.15rem' }}>
-                    <div style={{ fontSize: '0.82rem', fontWeight: 400, lineHeight: 1.2, letterSpacing: '-0.01em' }}>
-                      {edu.degree}
-                      <span style={{ fontSize: '0.75rem', color: inkDim, marginLeft: '0.4em' }}>({edu.institution})</span>
-                    </div>
-                    <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.58rem', color: inkMuted, whiteSpace: 'nowrap' }}>
-                      EDU-{String(i + 1).padStart(3, '0')}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '0.68rem', color: inkDim, fontFamily: 'ui-monospace, monospace' }}>{edu.startDate} — {edu.endDate}</div>
-                </div>
-              ))}
-            </>
-          )}
-
-          {languages.length > 0 && (
-            <>
-              <SectionMarker index={education.length > 0 ? '03' : '02'} title="Languages" />
-              <StructuralRule />
-              {languages.map((lang) => (
-                <div key={lang.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.6rem', fontSize: '0.78rem' }}>
-                  <span style={{ fontWeight: 400 }}>{lang.name}</span>
-                  <span style={{ color: inkDim, fontSize: '0.68rem', fontFamily: 'ui-monospace, monospace' }}>{lang.level.toUpperCase()}</span>
-                </div>
-              ))}
-            </>
-          )}
+          <SectionMarker index="01" title="Experience cont." />
+          {pageThreeExp.map((exp, i) => (
+            <ExperienceItem key={exp.id} exp={exp} index={pageOneExp.length + pageTwoExp.length + i} />
+          ))}
         </div>
       )}
     </div>

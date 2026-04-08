@@ -1,4 +1,4 @@
-export type ThemeId = 'minimal' | 'active-ledger' | 'dark' | 'broadsheet'
+export type ThemeId = 'minimal' | 'active-ledger' | 'dark' | 'broadsheet' | 'warm-sidebar' | 'typewriter'
 
 export interface CVRenderContext {
   mode: 'web' | 'pdf'
@@ -30,6 +30,7 @@ export interface CVExperience {
   description: string
   skills: string[]
   caseStudyUrl?: string
+  hidden?: boolean
 }
 
 export interface CVEducation {
