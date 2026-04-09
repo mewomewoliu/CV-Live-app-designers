@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     browser = await getBrowser()
     const page = await browser.newPage()
 
-    await page.setViewport({ width: 794, height: 1123 })
+    await page.setViewport({ width: 794, height: 1123, deviceScaleFactor: 2 })
     await page.setContent(html, { waitUntil: 'networkidle0' })
 
     // Wait for fonts to be ready

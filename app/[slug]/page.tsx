@@ -1,16 +1,25 @@
 import { notFound } from 'next/navigation'
-import { getCVBySlug } from '@/lib/mock-cv'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { CVRenderer } from '@/components/cv/CVRenderer'
 import { DownloadPDFButton } from '@/components/DownloadPDFButton'
 import Link from 'next/link'
+import type { CvRow } from '@/lib/supabase/types'
 
 interface Props {
   params: { slug: string }
 }
 
-export default function CVPage({ params }: Props) {
-  const cv = getCVBySlug(params.slug)
-  if (!cv) notFound()
+export default async function CVPage({ params }: Props) {
+  const admin = createAdminClient()
+  const { data: cvRow } = await admin
+    .from('cvs')
+    .select('*')
+    .eq('slug', params.slug)
+    .eq('is_published', true)
+    .single() as { data: CvRow | null }
+
+  if (!cvRow) notFound()
+  const cv = cvRow.cv_data
 
   return (
     <main className="min-h-screen py-12 px-4" style={{ backgroundColor: '#f0f0ee' }}>
