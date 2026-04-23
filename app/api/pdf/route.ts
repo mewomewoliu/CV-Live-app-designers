@@ -43,8 +43,9 @@ export async function POST(request: NextRequest) {
       },
     })
   } catch (err) {
-    console.error('PDF generation error:', err)
-    return new Response('PDF generation failed', { status: 500 })
+    const msg = err instanceof Error ? err.message + '\n' + err.stack : String(err)
+    console.error('PDF generation error:', msg)
+    return new Response(msg, { status: 500 })
   } finally {
     await browser?.close()
   }
