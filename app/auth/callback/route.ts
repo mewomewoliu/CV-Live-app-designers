@@ -28,8 +28,10 @@ export async function GET(request: NextRequest) {
     .maybeSingle()
 
   if (!existing) {
-    const firstName = (user.user_metadata?.firstName as string) ?? ''
-    const lastName = (user.user_metadata?.lastName as string) ?? ''
+    const meta = user.user_metadata ?? {}
+    const fullNameParts = ((meta.full_name ?? meta.name) as string | undefined)?.split(' ') ?? []
+    const firstName = (meta.firstName as string) || fullNameParts[0] || ''
+    const lastName = (meta.lastName as string) || fullNameParts.slice(1).join(' ') || ''
 
     // Retry up to 3 times on slug collision (extremely unlikely with 4-char suffix)
     for (let attempt = 0; attempt < 3; attempt++) {
