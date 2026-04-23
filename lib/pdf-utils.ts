@@ -9,9 +9,8 @@ export async function getBrowser() {
   const puppeteerCore = await import('puppeteer-core')
   return puppeteerCore.default.launch({
     args: chromium.default.args,
-    defaultViewport: chromium.default.defaultViewport,
     executablePath: await chromium.default.executablePath(),
-    headless: chromium.default.headless as boolean,
+    headless: true,
   })
 }
 
