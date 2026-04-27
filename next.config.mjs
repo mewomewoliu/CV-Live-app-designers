@@ -1,27 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ['puppeteer-core', '@sparticuz/chromium', 'puppeteer'],
-  outputFileTracingIncludes: {
-    '/api/pdf': ['./node_modules/@sparticuz/chromium/bin/**/*'],
-  },
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      const origExternals = config.externals
-      const chromiumExternals = [
-        { '@sparticuz/chromium': 'commonjs @sparticuz/chromium' },
-        { 'puppeteer-core': 'commonjs puppeteer-core' },
-        { 'puppeteer': 'commonjs puppeteer' },
-      ]
-      if (typeof origExternals === 'function') {
-        config.externals = [origExternals, ...chromiumExternals]
-      } else {
-        config.externals = [
-          ...(Array.isArray(origExternals) ? origExternals : origExternals ? [origExternals] : []),
-          ...chromiumExternals,
-        ]
-      }
-    }
-    return config
+  experimental: {
+    serverComponentsExternalPackages: ['puppeteer-core', '@sparticuz/chromium', 'puppeteer'],
+    // Prevent the client-side Router Cache from serving stale data on dynamic routes.
+    // Without this, Next.js 14.2 caches dynamic pages for 30s even with force-dynamic.
+    staleTimes: {
+      dynamic: 0,
+    },
   },
 }
 
