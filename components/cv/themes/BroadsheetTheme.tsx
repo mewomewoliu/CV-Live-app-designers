@@ -1,6 +1,7 @@
 import React from 'react'
 import { CVData, CVRenderContext, CVExperience } from '@/lib/cv-types'
 import { ensureHttp } from '@/lib/url-utils'
+import { DescriptionRenderer } from '../sections/DescriptionRenderer'
 
 interface Props {
   data: CVData
@@ -151,9 +152,10 @@ function ExperienceItem({ exp }: { exp: CVExperience; index?: number }) {
 
       {/* Description */}
       {exp.description && (
-        <div style={{ fontFamily: mono, fontSize: '0.65rem', lineHeight: 1.72, color: ink, marginLeft: '1rem', marginBottom: '0.25rem' }}>
-          {exp.description}
-        </div>
+        <DescriptionRenderer
+          text={exp.description}
+          style={{ fontFamily: mono, fontSize: '0.65rem', lineHeight: 1.72, color: ink, marginLeft: '1rem', marginBottom: '0.25rem' }}
+        />
       )}
 
       {/* Impact line as "> bullet" */}

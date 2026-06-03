@@ -2,6 +2,7 @@ import React from 'react'
 import { CVData, CVRenderContext, CVExperience } from '@/lib/cv-types'
 import { SkillPill } from '../sections/SkillPill'
 import { ensureHttp } from '@/lib/url-utils'
+import { DescriptionRenderer } from '../sections/DescriptionRenderer'
 
 interface Props {
   data: CVData
@@ -79,9 +80,10 @@ function ExperienceItem({ exp, index }: { exp: CVExperience; index: number }) {
 
       {/* Description */}
       {exp.description && (
-        <div style={{ fontSize: '0.75rem', lineHeight: 1.6, color: '#52525b', marginBottom: '0.55rem', maxWidth: '94%' }}>
-          {exp.description}
-        </div>
+        <DescriptionRenderer
+          text={exp.description}
+          style={{ fontSize: '0.75rem', lineHeight: 1.6, color: '#52525b', marginBottom: '0.55rem', maxWidth: '94%' }}
+        />
       )}
 
       {/* Skills + case study */}

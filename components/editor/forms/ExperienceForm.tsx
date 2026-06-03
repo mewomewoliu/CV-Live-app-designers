@@ -194,8 +194,9 @@ function ExperienceCard({
             value={exp.description}
             onBlur={(v) => onUpdate({ description: v })}
             multiline
-            rows={3}
-            placeholder="Describe the scope, methods, and outcomes..."
+            rows={4}
+            placeholder={"Describe the scope, methods, and outcomes...\n\nTip: Start a line with - or * to create a bullet point.\nPress Enter to add a new line."}
+            hint="Enter = new line  ·  - or * at line start = bullet"
           />
 
           <TagInput tags={exp.skills} onChange={(skills) => onUpdate({ skills })} />

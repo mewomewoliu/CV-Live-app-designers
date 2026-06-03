@@ -1,6 +1,7 @@
 import React from 'react'
 import { CVData, CVRenderContext, CVExperience } from '@/lib/cv-types'
 import { ensureHttp } from '@/lib/url-utils'
+import { descriptionToBullets } from '@/lib/description-utils'
 
 interface Props {
   data: CVData
@@ -50,10 +51,7 @@ function ExperienceBlock({ exp }: { exp: CVExperience }) {
 
   const bullets: string[] = []
   if (exp.impactLine) bullets.push(exp.impactLine)
-  if (exp.description) {
-    const sentences = exp.description.split(/(?<=[.!?])\s+/).filter(Boolean)
-    bullets.push(...sentences)
-  }
+  bullets.push(...descriptionToBullets(exp.description))
 
   return (
     <div style={{ marginBottom: '1.55rem' }}>
